@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern char **environ;
 /**
  * find_cmd - search a command in PATH
  * @cmd: command typed by user
