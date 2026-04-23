@@ -1,48 +1,61 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 extern char **environ;
 
 /**
- * find_path - search full path of a command in PATH
- * @cmd: command entered by user
+ * find_cmd - search full path of a command in PATH
+ * @cmd: command typed by user (example: "ls")
  *
- * Return: full path if found, otherwise NULL
+ * Return: full path if found (example: "/bin/ls")
+ *         or NULL if not found
  */
-char *find_path(char *cmd)
+char *find_cmd(char *cmd)
 {
-	char *path = getenv("PATH");
-	char *token;
-	static char full[1024];
+	char *path = getenv("PATH");   /* get system PATH */
+	char *copy;                    /* we copy PATH because strtok modifies it */
+	char *token;                  /* each folder in PATH */
+	static char full[1024];       /* final path buffer */
 
+	/* if PATH doesn't exist, we stop */
 	if (!path)
 		return (NULL);
 
-	token = strtok(path, ":");
+	/* duplicate PATH to avoid modifying original */
+	copy = strdup(path);
+	if (!copy)
+		return (NULL);
+
+	/* split PATH into folders */
+	token = strtok(copy, ":");
 
 	while (token)
 	{
-		/* build full path = directory + "/" + command */
+		/* build full path: folder + "/" + command */
 		strcpy(full, token);
 		strcat(full, "/");
 		strcat(full, cmd);
 
-		/* check if executable exists */
+		/* check if file exists and is executable */
 		if (access(full, X_OK) == 0)
+		{
+			free(copy); /* free memory before returning */
 			return (full);
+		}
 
+		/* move to next PATH folder */
 		token = strtok(NULL, ":");
 	}
 
+	free(copy); /* free memory if not found */
 	return (NULL);
 }
 
 /**
- * execute_command - execute a command using fork and execve
- * @command: user input command
+ * execute_command - executes a command using fork + execve
+ * @command: user input (example: "ls")
  */
 void execute_command(char *command)
 {
@@ -55,9 +68,9 @@ void execute_command(char *command)
 	args[1] = NULL;
 
 	/* try to find command in PATH */
-	cmd_path = find_path(command);
+	cmd_path = find_cmd(command);
 
-	/* if not found in PATH, use raw command */
+	/* if not found, use raw command (useful for /bin/ls) */
 	if (!cmd_path)
 		cmd_path = command;
 
@@ -66,16 +79,17 @@ void execute_command(char *command)
 
 	if (pid == 0)
 	{
-		/* child process executes command */
+		/* CHILD: execute command */
 		if (execve(cmd_path, args, environ) == -1)
 		{
-			perror("./hsh");
+			/* if execution fails */
+			write(2, "./hsh: command not found\n", 26);
 			exit(1);
 		}
 	}
 	else
 	{
-		/* parent waits for child process */
+		/* PARENT: wait child to finish */
 		wait(NULL);
 	}
 }
