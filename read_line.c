@@ -1,6 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
 char *read_line(void)
 {
@@ -17,7 +18,7 @@ char *read_line(void)
 		exit(0);
 	}
 
-	if (line[nread - 1] == '\n')
+	if (nread > 0 && line[nread - 1] == '\n')
 		line[nread - 1] = '\0';
 	/* remove newline */
 
