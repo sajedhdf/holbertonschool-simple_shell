@@ -1,0 +1,18 @@
+.TH HSH 1 "April 2026" "Simple Shell" "User Commands"
+
+.SH NAME
+hsh - simple UNIX command interpreter
+
+.SH SYNOPSIS
+./hsh
+
+.SH DESCRIPTION
+hsh is a simple shell written in C.
+It reads commands from the user and executes them using system calls.
+
+.SH EXAMPLE
+($) /bin/ls
+main.c shell.c
+
+.SH AUTHORS
+Sajed Benaissa
