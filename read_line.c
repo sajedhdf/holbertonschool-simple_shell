@@ -1,14 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 char *read_line(void)
 {
 	char *line = NULL;
 	size_t len = 0;
+	ssize_t nread;
 
-	getline(&line, &len, stdin);
-	/* read the command entered by the user */
+	nread = getline(&line, &len, stdin);
+	/* read command from user */
+
+	if (nread == -1)
+	{
+		free(line);
+		exit(0);
+	}
+
+	if (line[nread - 1] == '\n')
+		line[nread - 1] = '\0';
+	/* remove newline */
 
 	return (line);
-	/* return the command to the shell */
 }
