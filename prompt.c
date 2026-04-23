@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include <unistd.h>
 
 void display_prompt(void)
 {
-	printf("#cisfun$ ");
-	/* display the shell prompt */
+	write(1, "#cisfun$ ", 9);
+	/* display shell prompt */
 }
