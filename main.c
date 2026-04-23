@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include "simple_shell.h"
 
 int main(void)
@@ -7,17 +8,19 @@ int main(void)
 
 	while (1)
 	{
-		display_prompt();
-		/* print prompt */
+		if (isatty(STDIN_FILENO))
+			display_prompt();
+		/* show prompt only in interactive mode */
 
 		command = read_line();
-		/* get user input */
+		/* read user input */
 
 		if (!command)
-			continue;
+			break;
+		/* handle EOF (Ctrl+D / pipe) */
 
 		execute_command(command);
-		/* run command */
+		/* execute command */
 
 		free(command);
 		/* free memory */
