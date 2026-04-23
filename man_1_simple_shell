@@ -1,0 +1,13 @@
+SIMPLE_SHELL(1)
+
+NAME
+	simple_shell - simple UNIX command line interpreter
+
+DESCRIPTION
+	A minimal shell that reads commands and executes them using execve.
+
+USAGE
+	./hsh
+
+AUTHOR
+	Sajed BENAISSA
