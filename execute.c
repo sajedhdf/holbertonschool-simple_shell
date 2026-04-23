@@ -8,29 +8,31 @@ extern char **environ;
 void execute_command(char *command)
 {
 	pid_t pid;
+	char *args[2];
+	/* arguments array for execve */
+
+	args[0] = command;
+	args[1] = NULL;
 
 	pid = fork();
-	/* create a child process */
+	/* create child process */
 
 	if (pid == 0)
 	/* child process */
 	{
-		char *args[] = {command, NULL};
-		/* arguments array for execve */
-
 		execve(command, args, environ);
 		/* execute the command */
 
 		perror("./simple_shell");
-		/* print error if command not found */
+		/* print error if command fails */
 
 		exit(1);
-		/* exit child process if execve fails */
+		/* exit child process */
 	}
 	else
 	/* parent process */
 	{
 		wait(NULL);
-		/* wait until child process finishes */
+		/* wait for child process */
 	}
 }
