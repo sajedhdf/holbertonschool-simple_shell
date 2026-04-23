@@ -2,6 +2,13 @@
 #include <unistd.h>
 #include "simple_shell.h"
 
+/**
+ * main - Entry point of simple shell
+ *
+ * Description: Reads user input, executes commands, and handles EOF.
+ *
+ * Return: Always 0 (Success)
+ */
 int main(void)
 {
 	char *command;

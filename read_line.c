@@ -3,6 +3,14 @@
 #include <unistd.h>
 #include <stdio.h>
 
+/**
+ * read_line - reads input from user
+ *
+ * Description: Gets line from stdin and removes newline character
+ *
+ * Return: pointer to input string
+ */
+
 char *read_line(void)
 {
 	char *line = NULL;
