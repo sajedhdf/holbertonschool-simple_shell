@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "simple_shell.h"
 
@@ -7,19 +6,21 @@ int main(void)
 	char *command;
 
 	while (1)
-	/* infinite loop to keep the shell running */
 	{
 		display_prompt();
-		/* show the shell prompt */
+		/* print prompt */
 
 		command = read_line();
-		/* read the command from the user */
+		/* get user input */
+
+		if (!command)
+			continue;
 
 		execute_command(command);
-		/* execute the command */
+		/* run command */
 
 		free(command);
-		/* free memory used by the command */
+		/* free memory */
 	}
 
 	return (0);
